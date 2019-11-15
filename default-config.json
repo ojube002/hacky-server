@@ -1,0 +1,27 @@
+{
+    "app-version": "1.0.0",
+    "mode": "PRODUCTION",
+    "keycloak": {
+      "admin": {
+        "grant_type": "password",
+        "client_id": "admin-cli"
+      },
+      "rest": {
+        "bearer-only": true,
+        "ssl-required": "external",
+        "confidential-port": 0
+      },
+      "app": {
+        "ssl-required": "external",
+        "public-client": true,
+        "confidential-port": 0
+      }
+    },
+    "mysql": {
+      "host": "localhost",
+      "port": "3306"
+    },
+    "migrations": {
+      "lock-file": "/tmp/hacky-migrations.lock"
+    }
+  }

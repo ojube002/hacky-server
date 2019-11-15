@@ -1,0 +1,40 @@
+{
+  "name": "hacky-server",
+  "version": "1.0.1",
+  "description": "hacky backend",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js"
+  },
+  "author": "bittineuvos",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.6",
+    "@types/express": "^4.17.2",
+    "@types/express-session": "^1.15.15",
+    "@types/keycloak-connect": "^4.5.1",
+    "@types/lodash": "^4.14.147",
+    "@types/nconf": "^0.10.0",
+    "@types/sequelize": "^4.27.35",
+    "@types/umzug": "^2.2.2",
+    "@types/bluebird": "^3.5.25",
+    "tslint": "^5.20.1",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "connect-session-sequelize": "^6.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "keycloak-connect": "^7.0.1",
+    "lodash": "^4.17.15",
+    "log4js": "^6.0.0",
+    "moment": "^2.24.0",
+    "mysql2": "^2.0.0",
+    "nconf": "^0.10.0",
+    "sequelize": "^4.42.0",
+    "umzug": "^2.2.0",
+    "uuid4": "^1.1.4"
+  }
+}

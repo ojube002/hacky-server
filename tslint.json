@@ -1,0 +1,13 @@
+{
+    "extends": [],
+    "rules": {
+        "no-console": false
+    },    
+    "defaultSeverity": "warning",
+    "linterOptions": {
+        "exclude": [
+            "config/**/*.js",
+            "node_modules/**/*.ts"
+        ]
+    }
+}
