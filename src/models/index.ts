@@ -1,6 +1,8 @@
 import * as Bluebird from "bluebird";
 import * as Sequelize from "sequelize";
 import * as _ from "lodash";
+import * as uuid from "uuid4";
+import moment = require("moment");
 
 export interface NewsArticleModel {
   id: number,
@@ -137,11 +139,12 @@ export class Models {
    */
   createCharacter(name: string, userId: string, statsId: string ): PromiseLike<CharacterModel> {
     return this.sequelize.models.Character.create({
+      id: uuid(),
       name: name,
       userId: userId,
       statsId: statsId,
-      createdAt: Date,
-      updatedAt: Date,
+      createdAt: moment(),
+      updatedAt: moment(),
     });
   }
 
