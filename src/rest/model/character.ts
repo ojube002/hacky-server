@@ -1,5 +1,5 @@
 /**
- * Test rest api
+ * hacky rest api
  * REST API for test
  *
  * OpenAPI spec version: 3.0.0
@@ -12,10 +12,10 @@
 
 
 export interface Character { 
-    id: string  | null;
+    id: string ;
     name: string ;
-    level: number ;
-    experience: number ;
+    userId: string ;
+    statsId: string ;
     readonly createdAt: Date  | null;
     readonly updatedAt: Date  | null;
 }    
@@ -23,8 +23,8 @@ export interface Character {
 export interface CharacterOpt { 
     id?: string;
     name?: string;
-    level?: number;
-    experience?: number;
+    userId?: string;
+    statsId?: string;
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
 }

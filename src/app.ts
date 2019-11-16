@@ -50,8 +50,7 @@ process.on("unhandledRejection", (error) => {
   const SequelizeStore = ConnectSessionSequelize(session.Store);
 
   const sessionStore = new SequelizeStore({
-    db: sequelize,
-    table: "ConnectSession"
+    db: sequelize
   });
 
   sessionStore.sync();

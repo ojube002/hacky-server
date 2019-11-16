@@ -11,6 +11,15 @@ export interface NewsArticleModel {
   updatedAt: Date
 }
 
+export interface CharacterModel {
+  id: string,
+  name: string,
+  userId: string,
+  statsId: string,
+  createdAt: Date,
+  updatedAt: Date,
+}
+
 
 const PRINT_MODEL_INTERFACES = false;
 
@@ -29,11 +38,13 @@ export class Models {
    */
   private defineModels() {
 
-    this.defineModel("NewsArticle", {
-      id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true, allowNull: false },
-      title: { type: Sequelize.STRING(191), allowNull: false },
-      contents: { type: "LONGTEXT", allowNull: false },
-      imageUrl: { type: Sequelize.STRING(191), validate: { isUrl: true } }
+    this.defineModel("Character", {
+      id: { type: Sequelize.UUID, primaryKey: true, allowNull: false },
+      name: { type: Sequelize.STRING(191), allowNull: false },
+      userId: { type: Sequelize.UUID, allowNull: false },
+      statsId: { type: Sequelize.UUID, allowNull: false },
+      createdAt: { type: Sequelize.DATE, allowNull: false },
+      updatedAt: { type: Sequelize.DATE, allowNull: false }
     });
     
   }
@@ -92,43 +103,6 @@ export class Models {
   // News Articles
   
   /**
-   * Creates new article
-   * 
-   * @param title title 
-   * @param contents contents
-   * @param imageUrl image URL
-   * @returns promise for news article
-   */
-  createNewsArticle(title: string, contents: string, imageUrl: string | null): PromiseLike<NewsArticleModel> {
-    return this.sequelize.models.NewsArticle.create({
-      title: title,
-      contents: contents,
-      imageUrl: imageUrl
-    });
-  }
-  
-  /**
-   * Finds an new article
-   * 
-   * @param id news article id
-   * @returns promise for news article or null if not found
-   */
-  findNewsArticleById(id: number): PromiseLike<NewsArticleModel | null> {
-    return this.sequelize.models.NewsArticle.findOne({ where: { id : id } });
-  }
-  
-  /**
-   * Lists news articles
-   * 
-   * @param firstResult first result
-   * @param maxResults max results
-   * @returns promise for news articles
-   */
-  listNewsArticles(firstResult?: number, maxResults?: number): PromiseLike<NewsArticleModel[]> {
-    return this.sequelize.models.NewsArticle.findAll({ offset: firstResult, limit: maxResults });
-  }
-  
-  /**
    * Updates new article
    * 
    * @param id news article id
@@ -150,15 +124,61 @@ export class Models {
       silent: silentUpdate ? silentUpdate : false
     });
   }
-  
+
+  // Characters
+
   /**
-   * Deletes a news article
+   * Creates character
    * 
-   * @param id news article id
+   * @param title title 
+   * @param contents contents
+   * @param imageUrl image URL
+   * @returns promise for news article
+   */
+  createCharacter(name: string, userId: string, statsId: string ): PromiseLike<CharacterModel> {
+    return this.sequelize.models.Character.create({
+      name: name,
+      userId: userId,
+      statsId: statsId,
+      createdAt: Date,
+      updatedAt: Date,
+    });
+  }
+
+  /**
+   * Lists characters
+   * 
+   * @param userId first result
+   * @param firstResult first result
+   * @param maxResults max results
+   * @returns promise for characters
+   */
+  listCharacters(userId: string,firstResult?: number, maxResults?: number): PromiseLike<CharacterModel[]> {
+    return this.sequelize.models.Character.findAll({ 
+      where: {userId: userId},
+      offset: firstResult, 
+      limit: maxResults 
+    });
+  }
+
+  /**
+   * Deletes a character
+   * 
+   * @param id character id
    * @returns promise for delete
    */
-  deleteNewsArticle(id: number): PromiseLike<number> {
-    return this.sequelize.models.NewsArticle.destroy({ where: {id: id} });
+  deleteCharacter(id: string): PromiseLike<number> {
+    return this.sequelize.models.Character.destroy({ where: {id: id} });
+  }
+
+  /**
+   * Finds an character
+   * 
+   * @param id character id
+   * @returns promise for character or null if not found
+   */
+  findCharacterById(id: string): PromiseLike<CharacterModel | null> {
+    return this.sequelize.models.Character.findOne({ where: { id : id } });
   }
  
 }

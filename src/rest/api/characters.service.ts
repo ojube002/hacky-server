@@ -13,14 +13,16 @@ export default abstract class CharactersService extends AbstractService {
   constructor(app: Application, keycloak: Keycloak) {
     super();
 
-    app.post(`/api/${this.toPath('/characters')}`, [ keycloak.protect() ], this.catchAsync(this.createCharacter.bind(this)));
-    app.get(`/api/${this.toPath('/characters')}`, [ keycloak.protect() ], this.catchAsync(this.listCharacters.bind(this)));
+    app.post(`/api${this.toPath('/character')}`,  this.catchAsync(this.createCharacter.bind(this)));
+    app.delete(`/api${this.toPath('/character/${encodeURIComponent(String(characterId))}')}`, this.catchAsync(this.deleteCharacter.bind(this)));
+    app.get(`/api${this.toPath('/character/${encodeURIComponent(String(characterId))}')}`,  this.catchAsync(this.findCharacter.bind(this)));
+    app.get(`/api${this.toPath('/character/list/${encodeURIComponent(String(userId))}')}`, this.catchAsync(this.listCharacters.bind(this)));
   }
 
 
   /**
-   * Creates news article
-   * @summary Create news article
+   * Creates character
+   * @summary Create character
    * Accepted parameters:
     * - (body) Character body - Payload
   */
@@ -28,9 +30,28 @@ export default abstract class CharactersService extends AbstractService {
 
 
   /**
+   * Deletes a character
+   * @summary Deletes a character
+   * Accepted parameters:
+    * - (path) string characterId - character id
+  */
+  public abstract deleteCharacter(req: Request, res: Response): Promise<void>;
+
+
+  /**
+   * Finds character by id
+   * @summary Find character
+   * Accepted parameters:
+    * - (path) string characterId - character id
+  */
+  public abstract findCharacter(req: Request, res: Response): Promise<void>;
+
+
+  /**
    * Lists Characters
    * @summary Lists characters
    * Accepted parameters:
+    * - (path) string userId - user id
   */
   public abstract listCharacters(req: Request, res: Response): Promise<void>;
 

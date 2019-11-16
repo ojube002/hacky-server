@@ -29,8 +29,9 @@
 
             await query.createTable("Characters", {
                 id: { type: Sequelize.UUID, primaryKey: true, allowNull: false },
-                userId: { type: Sequelize.UUID, allowNull: false },
                 name: { type: Sequelize.STRING(191), allowNull: false },
+                userId: { type: Sequelize.UUID, allowNull: false },
+                statsId: { type: Sequelize.UUID, allowNull: false },
                 createdAt: { type: Sequelize.DATE, allowNull: false },
                 updatedAt: { type: Sequelize.DATE, allowNull: false }
             });

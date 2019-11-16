@@ -1,5 +1,5 @@
 /**
- * Test rest api
+ * hacky rest api
  * REST API for test
  *
  * OpenAPI spec version: 3.0.0
