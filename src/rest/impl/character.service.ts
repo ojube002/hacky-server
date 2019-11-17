@@ -1,12 +1,12 @@
 import { Response, Request } from "express";
-import CharactersService from "../api/character.service";
+import CharacterService from "../api/character.service";
 import { Character } from "../model/models";
 import models, { CharacterModel } from "../../models";
 
 /**
  * Implementation for Characters REST service
  */
-export default class CharacterServiceImpl extends CharactersService {
+export default class CharacterServiceImpl extends CharacterService {
 
   /**
    * @inheritdoc
@@ -14,7 +14,6 @@ export default class CharacterServiceImpl extends CharactersService {
   public async createCharacter(req: Request, res: Response): Promise<void> {
 
     const body: Character  = req.body;
-    console.log(body);
 
     if (!body.name) {
       this.sendNotFound(res, "name not found");
