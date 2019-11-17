@@ -41,6 +41,7 @@ export interface Keycloak {
   admin: KeycloakAdminConfig;
   rest: KeycloakConfig;
   app: KeycloakConfig;
+  hackyServer: KeycloakConfig;
 }
 
 export interface Mysql {

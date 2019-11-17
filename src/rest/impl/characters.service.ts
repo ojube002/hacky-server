@@ -14,6 +14,7 @@ export default class CharactersServiceImpl extends CharactersService {
   public async createCharacter(req: Request, res: Response): Promise<void> {
 
     const body: Character  = req.body;
+    console.log(body);
 
     if (!body.name) {
       this.sendNotFound(res, "name not found");

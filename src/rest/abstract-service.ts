@@ -1,10 +1,6 @@
 import * as _ from "lodash";
 import { Response, Request } from "express";
-import { BadRequest } from './model/badRequest';
-import { NotFound } from './model/notFound';
-import { Forbidden } from './model/forbidden';
-import { InternalServerError } from './model/internalServerError';
-import { NotImplemented } from "./model/models";
+import { HttpError } from './model/httpError';
 import { getLogger, Logger } from "log4js";
 import moment = require("moment");
 
@@ -90,7 +86,7 @@ export default class AbstractService {
    * @param {http.ServerResponse} res server response object
    */
   protected sendNotFound(res: Response, message?: string) {
-    const response: NotFound = {
+    const response: HttpError = {
       "code": 404,
       "message": message || "Not found"
     };
@@ -105,7 +101,7 @@ export default class AbstractService {
    * @param {String} message (optional)
    */
   protected sendBadRequest(res: Response, message?: string) {
-    const response: BadRequest = {
+    const response: HttpError = {
       "code": 400,
       "message": message || "Bad Request"
     };
@@ -122,7 +118,7 @@ export default class AbstractService {
    * @param {String} message (optional)
    */
   protected sendConflict(res: Response, message?: string) {
-    const response: BadRequest = {
+    const response: HttpError = {
       "code": 409,
       "message": message || "Conflict"
     };
@@ -139,7 +135,7 @@ export default class AbstractService {
    * @param {String} message (optional)
    */
   protected sendForbidden(res: Response, message?: string) {
-    const response: Forbidden = {
+    const response: HttpError = {
       "code": 403,
       "message": message || "Forbidden"
     };
@@ -155,7 +151,7 @@ export default class AbstractService {
    */
   protected sendInternalServerError(res: Response, error? : string|Error) {
     const message = error instanceof Error ? (error as Error).message : error;
-    const response: InternalServerError = {
+    const response: HttpError = {
       "code": 500,
       "message": message || "Internal Server Error"
     };
@@ -172,7 +168,7 @@ export default class AbstractService {
    * @param {String} message (optional)
    */
   protected sendNotImplemented(res: Response, message?: string) {
-    const response: NotImplemented = {
+    const response: HttpError = {
       "code": 501,
       "message": message || "Not implemented yet"
     };

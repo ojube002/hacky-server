@@ -11,12 +11,12 @@
  */
 
 
-export interface BadRequest { 
+export interface HttpError { 
     code: number  | null;
     message: string  | null;
 }    
 
-export interface BadRequestOpt { 
+export interface HttpErrorOpt { 
     code?: number;
     message?: string;
 }

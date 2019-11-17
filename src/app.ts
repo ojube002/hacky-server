@@ -42,7 +42,7 @@ process.on("unhandledRejection", (error) => {
   });
 
   initializeModels(sequelize);
-  
+
   const port = config().port || 3000;
   const app = express();
 
@@ -55,7 +55,7 @@ process.on("unhandledRejection", (error) => {
 
   sessionStore.sync();
 
-  const keycloak = new Keycloak({ store: sessionStore }, config().keycloak.rest);
+  const keycloak = new Keycloak({ store: sessionStore }, config().keycloak.hackyServer);
   httpServer.listen(port, () => {
     logger.info("Http server started");
   });
@@ -81,8 +81,8 @@ process.on("unhandledRejection", (error) => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
   //app.use(express.static(path.join(__dirname, "../public")));
-  
+
   new Api(app, keycloak);
-  
+
 
 })();
