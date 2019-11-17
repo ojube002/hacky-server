@@ -2,7 +2,7 @@ import { Application, Response, Request } from "express";
 import * as Keycloak from "keycloak-connect";
 import AbstractService from "../abstract-service";
 
-export default abstract class CharactersService extends AbstractService {
+export default abstract class CharacterService extends AbstractService {
 
   /**
    * Constructor

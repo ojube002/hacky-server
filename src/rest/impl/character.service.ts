@@ -1,12 +1,12 @@
 import { Response, Request } from "express";
-import CharactersService from "../api/characters.service";
+import CharactersService from "../api/character.service";
 import { Character } from "../model/models";
 import models, { CharacterModel } from "../../models";
 
 /**
  * Implementation for Characters REST service
  */
-export default class CharactersServiceImpl extends CharactersService {
+export default class CharacterServiceImpl extends CharactersService {
 
   /**
    * @inheritdoc
