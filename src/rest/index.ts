@@ -2,6 +2,7 @@ import { Application } from "express";
 import * as Keycloak from "keycloak-connect";
 
 import CharacterServiceImpl from './impl/character.service';
+import UserServiceImpl from './impl/user.service';
 
 export default class Api {
 
@@ -14,6 +15,8 @@ export default class Api {
   constructor(app: Application, keycloak: Keycloak) {
     
       new CharacterServiceImpl(app, keycloak);
+    
+      new UserServiceImpl(app, keycloak);
     
   }
 }

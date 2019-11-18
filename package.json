@@ -4,7 +4,8 @@
   "description": "hacky backend",
   "main": "dist/app.js",
   "scripts": {
-    "start": "tsc && node dist/app.js"
+    "start": "tsc && node dist/app.js",
+    "clean": "rm -rf ./dist && rm /tmp/hacky-migrations.lock"
   },
   "author": "bittineuvos",
   "license": "ISC",
@@ -27,6 +28,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "keycloak-admin": "^1.13.0",
     "keycloak-connect": "^7.0.1",
     "lodash": "^4.17.15",
     "log4js": "^6.0.0",
