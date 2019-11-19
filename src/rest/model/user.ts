@@ -12,11 +12,13 @@
 
 
 export interface User { 
-    name: string ;
+    firstname: string ;
+    lastname: string ;
     email: string ;
 }    
 
 export interface UserOpt { 
-    name?: string;
+    firstname?: string;
+    lastname?: string;
     email?: string;
 }

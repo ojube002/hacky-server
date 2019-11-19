@@ -4,28 +4,28 @@ import * as _ from "lodash";
 import * as uuid from "uuid4";
 import moment = require("moment");
 
-export interface NewsArticleModel {
-  id: number,
-  title: string,
-  contents: string,
-  imageUrl: string,
-  createdAt: Date,
-  updatedAt: Date
-}
-
 export interface CharacterModel {
   id: string,
   name: string,
   userId: string,
   statsId: string,
   createdAt: Date,
-  updatedAt: Date,
+  updatedAt: Date
+}
+
+export interface StatModel {
+  id: string,
+  characterId: string,
+  level: number,
+  experience: number,
+  createdAt: Date,
+  updatedAt: Date
 }
 
 
 const PRINT_MODEL_INTERFACES = false;
 
-export class Models { 
+export class Models {
 
   private sequelize: Sequelize.Sequelize;
 
@@ -42,13 +42,21 @@ export class Models {
 
     this.defineModel("Character", {
       id: { type: Sequelize.UUID, primaryKey: true, allowNull: false },
-      name: { type: Sequelize.STRING(191), allowNull: false },
+      name: { type: Sequelize.STRING(191), allowNull: false, unique: true },
       userId: { type: Sequelize.UUID, allowNull: false },
       statsId: { type: Sequelize.UUID, allowNull: false },
       createdAt: { type: Sequelize.DATE, allowNull: false },
       updatedAt: { type: Sequelize.DATE, allowNull: false }
     });
-    
+
+    this.defineModel("Stat", {
+      id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true, allowNull: false },
+      level: { type: Sequelize.BIGINT, defaultValue: 1, allowNull: false },
+      experience: { type: Sequelize.BIGINT, allowNull: false },
+      createdAt: { type: Sequelize.DATE, allowNull: false },
+      updatedAt: { type: Sequelize.DATE, allowNull: false }
+    });
+
   }
 
   /**
@@ -101,9 +109,9 @@ export class Models {
     console.log(`export interface ${name}Model {\n${properties.join(",\n")}\n}\n`);
   }
 
-  
+
   // News Articles
-  
+
   /**
    * Updates new article
    * 
@@ -114,18 +122,18 @@ export class Models {
    * @param silentUpdate silent update
    * @returns promise for update
    */
-  updateNewsArticle(id: number, title: string, contents: string, imageUrl: string | null, silentUpdate: boolean): PromiseLike<[number, any]> {
-    return this.sequelize.models.NewsArticle.update({
-      title: title,
-      contents: contents,
-      imageUrl: imageUrl
-    }, {
-      where: {
-        id: id
-      },
-      silent: silentUpdate ? silentUpdate : false
-    });
-  }
+  /*   updateNewsArticle(id: number, title: string, contents: string, imageUrl: string | null, silentUpdate: boolean): PromiseLike<[number, any]> {
+      return this.sequelize.models.NewsArticle.update({
+        title: title,
+        contents: contents,
+        imageUrl: imageUrl
+      }, {
+        where: {
+          id: id
+        },
+        silent: silentUpdate ? silentUpdate : false
+      });
+    } */
 
   // Characters
 
@@ -137,7 +145,7 @@ export class Models {
    * @param imageUrl image URL
    * @returns promise for news article
    */
-  createCharacter(name: string, userId: string, statsId: string ): PromiseLike<CharacterModel> {
+  createCharacter(name: string, userId: string, statsId: string): PromiseLike<CharacterModel> {
     return this.sequelize.models.Character.create({
       id: uuid(),
       name: name,
@@ -156,11 +164,11 @@ export class Models {
    * @param maxResults max results
    * @returns promise for characters
    */
-  listCharacters(userId: string,firstResult?: number, maxResults?: number): PromiseLike<CharacterModel[]> {
-    return this.sequelize.models.Character.findAll({ 
-      where: {userId: userId},
-      offset: firstResult, 
-      limit: maxResults 
+  listCharacters(userId: string, firstResult?: number, maxResults?: number): PromiseLike<CharacterModel[]> {
+    return this.sequelize.models.Character.findAll({
+      where: { userId: userId },
+      offset: firstResult,
+      limit: maxResults
     });
   }
 
@@ -171,7 +179,7 @@ export class Models {
    * @returns promise for delete
    */
   deleteCharacter(id: string): PromiseLike<number> {
-    return this.sequelize.models.Character.destroy({ where: {id: id} });
+    return this.sequelize.models.Character.destroy({ where: { id: id } });
   }
 
   /**
@@ -181,9 +189,70 @@ export class Models {
    * @returns promise for character or null if not found
    */
   findCharacterById(id: string): PromiseLike<CharacterModel | null> {
-    return this.sequelize.models.Character.findOne({ where: { id : id } });
+    return this.sequelize.models.Character.findOne({ where: { id: id } });
   }
- 
+
+  // Stats
+
+  /**
+   * Creates stat
+   * 
+   * @param id id
+   * @param level level
+   * @param experience experience
+   * @returns promise for stat
+   */
+  createStat(id: string, level: number, experience: number): PromiseLike<StatModel> {
+    return this.sequelize.models.Stat.create({
+      id: id,
+      level: level,
+      experience: experience,
+      createdAt: moment(),
+      updatedAt: moment(),
+    });
+  }
+
+  /**
+   * Updates stat
+   * 
+   * @param id stat id
+   * @param level level
+   * @param experience experience
+   * @returns promise for update
+   */
+  updateStat(id: string, level: number, experience: number): PromiseLike<[number, any]> {
+    return this.sequelize.models.Stat.update({
+      id: id,
+      level: level,
+      experience: experience
+    }, {
+      where: {
+        id: id
+      }
+    });
+  }
+
+
+  /**
+   * Deletes a stat
+   * 
+   * @param id stat id
+   * @returns promise for delete
+   */
+  deleteStat(id: string): PromiseLike<number> {
+    return this.sequelize.models.Stat.destroy({ where: { id: id } });
+  }
+
+  /**
+   * Finds an stat
+   * 
+   * @param id stat id
+   * @returns promise for stat or null if not found
+   */
+  findStatById(id: string): PromiseLike<StatModel | null> {
+    return this.sequelize.models.Stat.findOne({ where: { id: id } });
+  }
+
 }
 
 const instance = new Models();

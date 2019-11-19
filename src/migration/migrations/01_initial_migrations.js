@@ -6,10 +6,9 @@
         up: async (query, Sequelize) => {
 
             await query.createTable("Stats", {
-                id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true, allowNull: false },
-                characterId: { type: Sequelize.UUID, allowNull: false },
-                level: { type: Sequelize.STRING(191), allowNull: false },
-                experience: { type: Sequelize.STRING(191), allowNull: false },
+                id: { type: Sequelize.UUID, primaryKey: true, allowNull: false },
+                level: { type: Sequelize.BIGINT, defaultValue: 1, allowNull: false },
+                experience: { type: Sequelize.BIGINT, allowNull: false },
                 createdAt: { type: Sequelize.DATE, allowNull: false },
                 updatedAt: { type: Sequelize.DATE, allowNull: false }
             });
