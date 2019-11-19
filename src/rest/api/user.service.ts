@@ -3,16 +3,12 @@ import * as Keycloak from "keycloak-connect";
 import AbstractService from "../abstract-service";
 import KcAdminClient from 'keycloak-admin';
 import { Credentials } from "keycloak-admin/lib/utils/auth";
+import { config, KeycloakAdminConfig } from "../../config";
 
 export default abstract class UserService extends AbstractService {
 
-  protected kcAdminClient: KcAdminClient = new KcAdminClient();
-  private credentials: Credentials = {
-    username: 'admin',
-    password: 'admin',
-    grantType: 'password',
-    clientId: 'admin-cli',
-  };
+  protected kcAdminClient: KcAdminClient = new KcAdminClient({realmName:"Hacky"});
+  private credentials: Credentials = config().admin;
   /**
    * Constructor
    * 
@@ -21,13 +17,14 @@ export default abstract class UserService extends AbstractService {
    */
   constructor(app: Application, keycloak: Keycloak) {
     super();
+    
     app.post(`/api${this.toPath('/user')}`, [this.auth.bind(this)], this.catchAsync(this.createUser.bind(this)));
-    app.delete(`/api${this.toPath('/User/${encodeURIComponent(String(userId))}')}`, [keycloak.protect(), () => this.kcAdminClient.auth(this.credentials)], this.catchAsync(this.deleteUser.bind(this)));
-    app.get(`/api${this.toPath('/User/${encodeURIComponent(String(userId))}')}`, [keycloak.protect(), () => this.kcAdminClient.auth(this.credentials)], this.catchAsync(this.findUser.bind(this)));
-    app.put(`/api${this.toPath('/user')}`, [keycloak.protect(), () => this.kcAdminClient.auth(this.credentials)], this.catchAsync(this.updateUser.bind(this)));
+    app.delete(`/api${this.toPath('/user/${encodeURIComponent(String(userId))}')}`, [keycloak.protect(),this.auth.bind(this)], this.catchAsync(this.deleteUser.bind(this)));
+    app.get(`/api${this.toPath('/user/${encodeURIComponent(String(userId))}')}`, [keycloak.protect(),this.auth.bind(this)], this.catchAsync(this.findUser.bind(this)));
+    app.put(`/api${this.toPath('/user')}`, [keycloak.protect(),this.auth.bind(this)], this.catchAsync(this.updateUser.bind(this)));
   }
-
-  public async auth(req:any, res:any, next:any) {
+  // middleware for authenticating admin client
+  private async auth(req:any, res:any, next:any) : Promise<void>{
     try {
       await this.kcAdminClient.auth(this.credentials);
       next();

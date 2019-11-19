@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import UserService from "../api/user.service";
-import { User } from "../model/models";
+import { User, HttpError } from "../model/models";
 import UserRepresentation from "keycloak-admin/lib/defs/userRepresentation";
 
 
@@ -38,12 +38,14 @@ export default class UserServiceImpl extends UserService {
     }
 
     try {
-      const result = await this.kcAdminClient.users.create({ realm: 'Hacky', ...user });
-      res.status(200).send("done:"+result.id);
+      const result = await this.kcAdminClient.users.create({ ...user });
+    
+     // res.status(201).send({id: result.id});
+      res.status(201).send({message: "user created succesfully!"});
     } catch (error) {
-      //console.log(error);
-      res.status(400).send(error.response.data);
-      
+      const err:HttpError = {code:error.response.status, message:`${error.response.statusText}: ${error.response.data.errorMessage}`};
+      res.status(error.response.status).send(err);
+
     }
 
   }
@@ -56,19 +58,28 @@ export default class UserServiceImpl extends UserService {
 
     const body: any = req.body;
 
-    if (!body.username) {
-      this.sendNotFound(res, "username not found");
-      return;
-    }
-
-    if (!body.password) {
-      this.sendNotFound(res, "password id not found");
+    if (!body.firstName && !body.lastName && !body.email) {
+      this.sendBadRequest(res, "invalid request body!");
       return;
     }
 
 
-
-    res.status(200).send();
+    const userId: string = this.getLoggedUserId(req);
+    console.log(userId);
+    const user: UserRepresentation = {
+      email: body.email,
+      firstName: body.firstName,
+      lastName: body.lastName
+    }
+    try {
+      const result = await this.kcAdminClient.users.update({ id: userId}, user);
+      console.log(result);
+      res.status(200).send({message: "user profile updated succesfully!"});
+    } catch (error) {
+      const err:HttpError = {code:error.response.status, message:`${error.response.statusText}: ${JSON.stringify(error.response.data)}`};
+      res.status(error.response.status).send(err);
+    }
+    
 
   }
 

@@ -1,4 +1,5 @@
 import * as nconf from "nconf";
+import { Credentials } from "keycloak-admin/lib/utils/auth";
 
 nconf
   .argv()
@@ -26,6 +27,7 @@ export interface KeycloakAdminConfig {
   client_id: string
   client_secret: string
 }
+
 
 export interface KeycloakConfig {
   realm: string;
@@ -69,7 +71,8 @@ export interface Config {
   "session-secret": string;
   keycloak: Keycloak;
   mysql: Mysql;
-  migrations: Migrations
+  migrations: Migrations,
+  admin: Credentials
 }
 
 export function config(): Config {
