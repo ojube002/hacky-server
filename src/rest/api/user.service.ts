@@ -16,8 +16,8 @@ export default abstract class UserService extends AbstractService {
     super();
 
     app.post(`/api${this.toPath('/user')}`, [this.middlewareHandler.bind(this)], this.catchAsync(this.createUser.bind(this)));
-    app.delete(`/api${this.toPath('/user/${encodeURIComponent(String(userId))}')}`, [keycloak.protect(), this.middlewareHandler.bind(this)], this.catchAsync(this.deleteUser.bind(this)));
-    app.get(`/api${this.toPath('/user/${encodeURIComponent(String(userId))}')}`, [keycloak.protect(), this.middlewareHandler.bind(this)], this.catchAsync(this.findUser.bind(this)));
+    app.delete(`/api${this.toPath('/user')}`, [keycloak.protect(), this.middlewareHandler.bind(this)], this.catchAsync(this.deleteUser.bind(this)));
+    app.get(`/api${this.toPath('/user')}`, [keycloak.protect(), this.middlewareHandler.bind(this)], this.catchAsync(this.findUser.bind(this)));
     app.put(`/api${this.toPath('/user')}`, [keycloak.protect(),this.middlewareHandler.bind(this)], this.catchAsync(this.updateUser.bind(this)));
  
   }
