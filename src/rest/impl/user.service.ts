@@ -121,12 +121,17 @@ export default class UserServiceImpl extends UserService {
    */
   public async findUser(req: Request, res: Response): Promise<void> {
 
+    const userId: string = this.getLoggedUserId(req);
 
+    try {
+      const result = await this.kcAdminClient.users.findOne({ id: userId });
 
-    const characterId: string = req.params.characterId;
+      res.status(200).send(result);
+    } catch (error) {
+      const err: HttpError = { code: error.response.status, message: `${error.response.statusText}: ${JSON.stringify(error.response.data)}` };
+      res.status(error.response.status).send(err);
+    }
 
-
-    res.status(200).send("TODO");
 
   }
 
@@ -137,15 +142,18 @@ export default class UserServiceImpl extends UserService {
 
 
 
-    const userId: any = req.params.userId;
+    const userId: any = this.getLoggedUserId(req);
+
+    try {
+      const result = await this.kcAdminClient.users.del({ id: userId });
+      res.status(200).send({ message: "user profile updated succesfully!" });
+
+    } catch (error) {
+      const err: HttpError = { code: error.response.status, message: `${error.response.statusText}: ${JSON.stringify(error.response.data)}` };
+      res.status(error.response.status).send(err);
+    }
 
 
-    /* 
-        if (response)
-          res.status(200).send("deleted character successfully");
-        else
-          res.send("did not find character to delete"); */
-    res.status(200).send("TODO");
   }
 
 
