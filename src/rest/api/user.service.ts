@@ -1,7 +1,6 @@
 import { Application, Response, Request } from "express";
 import * as Keycloak from "keycloak-connect";
 import AbstractService from "../abstract-service";
-import { Handler } from "express-serve-static-core";
 
 
 export default abstract class UserService extends AbstractService {

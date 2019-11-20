@@ -1,5 +1,5 @@
 import UserService from "../api/user.service";
-import { User, HttpError } from "../model/models";
+import { HttpError } from "../model/models";
 import UserRepresentation from "keycloak-admin/lib/defs/userRepresentation";
 import { Application, Response, Request, NextFunction } from "express";
 import * as Keycloak from "keycloak-connect";
@@ -13,16 +13,16 @@ import { getLogger, Logger } from "log4js";
  * Implementation for User REST service
  */
 export default class UserServiceImpl extends UserService {
-  private kcAdminClient: KcAdminClient = new KcAdminClient({realmName:"Hacky"});
+  private kcAdminClient: KcAdminClient = new KcAdminClient({ realmName: "Hacky" });
   private credentials: Credentials = config().admin;
   private logger: Logger = getLogger();
 
   constructor(app: Application, keycloak: Keycloak) {
     super(app, keycloak);
     this.middleware.push(this.auth.bind(this));
-    this.middleware.push(async(req:Request,res:Response,next:NextFunction)=> { console.log("middleware 2: do something with request.."); next();});
- 
-    
+    this.middleware.push(async (req: Request, res: Response, next: NextFunction) => { console.log("middleware 2: do something with request.."); next(); });
+
+
   }
 
   public async auth(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -31,7 +31,7 @@ export default class UserServiceImpl extends UserService {
       await this.kcAdminClient.auth(this.credentials);
       next();
     } catch (error) {
-      this.logger.error("admin client error:",error.response.data.error_description);
+      this.logger.error("admin client error:", error.response.data.error_description);
       res.status(error.response.status).send();
     }
   }
@@ -40,6 +40,8 @@ export default class UserServiceImpl extends UserService {
    * @inheritdoc
    */
   public async createUser(req: Request, res: Response): Promise<void> {
+
+
 
     const body: any = req.body;
 
@@ -80,6 +82,8 @@ export default class UserServiceImpl extends UserService {
    */
   public async updateUser(req: Request, res: Response): Promise<void> {
 
+
+
     const body: any = req.body;
 
     if (!body.firstName && !body.lastName && !body.email) {
@@ -89,7 +93,6 @@ export default class UserServiceImpl extends UserService {
 
 
     const userId: string = this.getLoggedUserId(req);
-    console.log(userId);
     const user: UserRepresentation = {
       email: body.email,
       firstName: body.firstName,
@@ -97,10 +100,10 @@ export default class UserServiceImpl extends UserService {
     }
     try {
       const result = await this.kcAdminClient.users.update({ id: userId }, user);
-      console.log(result);
+
       res.status(200).send({ message: "user profile updated succesfully!" });
     } catch (error) {
-      console.log(error);
+
       const err: HttpError = { code: error.response.status, message: `${error.response.statusText}: ${JSON.stringify(error.response.data)}` };
       res.status(error.response.status).send(err);
     }
@@ -112,10 +115,13 @@ export default class UserServiceImpl extends UserService {
    * @inheritdoc
    */
   public async findUser(req: Request, res: Response): Promise<void> {
+
+
+
     const characterId: string = req.params.characterId;
 
 
-    res.status(200).send();
+    res.status(200).send("TODO");
 
   }
 
@@ -123,6 +129,9 @@ export default class UserServiceImpl extends UserService {
    * @inheritdoc
    */
   public async deleteUser(req: Request, res: Response): Promise<void> {
+
+
+
     const userId: any = req.params.userId;
 
 
@@ -131,6 +140,7 @@ export default class UserServiceImpl extends UserService {
           res.status(200).send("deleted character successfully");
         else
           res.send("did not find character to delete"); */
+    res.status(200).send("TODO");
   }
 
 
