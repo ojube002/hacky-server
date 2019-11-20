@@ -15,13 +15,14 @@ export default class CharacterServiceImpl extends CharacterService {
   public async createCharacter(req: Request, res: Response): Promise<void> {
 
     const body: Character = req.body;
+    const userId = this.getLoggedUserId(req);
 
     if (!body.name) {
       this.sendNotFound(res, "name not found");
       return;
     }
 
-    if (!body.userId) {
+    if (!userId) {
       this.sendNotFound(res, "user id not found");
       return;
     }
@@ -34,7 +35,7 @@ export default class CharacterServiceImpl extends CharacterService {
     }
 
     try {
-      const databaseCharacter = await models.createCharacter(body.name, body.userId, statsId);
+      const databaseCharacter = await models.createCharacter(body.name, userId, statsId);
       const databaseStat = await models.createStat(statsId, 1, 0);
       res.status(200).send(await this.translateFullCharacter(databaseCharacter, databaseStat));
     } catch (error) {
@@ -47,7 +48,8 @@ export default class CharacterServiceImpl extends CharacterService {
    * @inheritdoc
    */
   public async listCharacters(req: Request, res: Response): Promise<void> {
-    const userId: string = req.params.userId;
+
+    const userId = this.getLoggedUserId(req);
 
     if (!userId) {
       this.sendNotFound(res, "userId not found");
