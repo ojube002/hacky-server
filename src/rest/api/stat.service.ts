@@ -13,10 +13,10 @@ export default abstract class StatService extends AbstractService {
   constructor(app: Application, keycloak: Keycloak) {
     super();
 
-    app.post(`/api${this.toPath('/stat')}`, [ keycloak.protect() ], this.catchAsync(this.createStat.bind(this)));
-    app.delete(`/api${this.toPath('/stat/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect() ], this.catchAsync(this.deleteStat.bind(this)));
-    app.get(`/api${this.toPath('/stat/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect() ], this.catchAsync(this.findStat.bind(this)));
-    app.put(`/api${this.toPath('/stat')}`, [ keycloak.protect() ], this.catchAsync(this.updateStat.bind(this)));
+    app.post(`/api${this.toPath('/stat')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.createStat.bind(this)));
+    app.delete(`/api${this.toPath('/stat/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.deleteStat.bind(this)));
+    app.get(`/api${this.toPath('/stat/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.findStat.bind(this)));
+    app.put(`/api${this.toPath('/stat')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.updateStat.bind(this)));
   }
 
 

@@ -13,10 +13,10 @@ export default abstract class CharacterService extends AbstractService {
   constructor(app: Application, keycloak: Keycloak) {
     super();
 
-    app.post(`/api${this.toPath('/character')}`, [ keycloak.protect() ], this.catchAsync(this.createCharacter.bind(this)));
-    app.delete(`/api${this.toPath('/character/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect() ], this.catchAsync(this.deleteCharacter.bind(this)));
-    app.get(`/api${this.toPath('/character/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect() ], this.catchAsync(this.findCharacter.bind(this)));
-    app.get(`/api${this.toPath('/character/list/${encodeURIComponent(String(userId))}')}`, [ keycloak.protect() ], this.catchAsync(this.listCharacters.bind(this)));
+    app.post(`/api${this.toPath('/character')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.createCharacter.bind(this)));
+    app.delete(`/api${this.toPath('/character/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.deleteCharacter.bind(this)));
+    app.get(`/api${this.toPath('/character/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.findCharacter.bind(this)));
+    app.get(`/api${this.toPath('/character/list/${encodeURIComponent(String(userId))}')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.listCharacters.bind(this)));
   }
 
 
