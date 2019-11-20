@@ -1,8 +1,9 @@
 import * as _ from "lodash";
-import { Response, Request } from "express";
+import { Response, Request, NextFunction, RequestHandler } from "express";
 import { HttpError } from './model/httpError';
 import { getLogger, Logger } from "log4js";
 import moment = require("moment");
+
 
 /**
  * Abstract base class for all REST services
@@ -10,7 +11,7 @@ import moment = require("moment");
 export default class AbstractService {
 
   private baseLogger: Logger = getLogger();
-  
+  protected middleware: any = [];
   /**
    * Gets accesstoken from request
    * 
@@ -22,8 +23,8 @@ export default class AbstractService {
     if (kauth && kauth.grant && kauth.grant.access_token) {
       return kauth.grant.access_token;
     }
-    
-    return null;   
+
+    return null;
   }
 
   /**
@@ -67,7 +68,30 @@ export default class AbstractService {
       }
     };
   }
+  /**
+   * Middleware handler
+   * 
+   * @param req Express request
+   * @param res Express response
+   * @param {function} next next handler function
+   */
+  protected middlewareHandler(req: Request, res: Response, next: NextFunction): void {
+    const run = (index: number) => {
+      if (index < this.middleware.length) {
+        this.middleware[index](req, res, (err: any) => {
+          if (err) {
+            return next(err);
+          }
+          index += 1;
+          run(index);
 
+        });
+      } else {
+        next();
+      }
+    }
+    run(0);
+  }
   /**
    * Converts swagger path into a route path
    * 
@@ -75,7 +99,7 @@ export default class AbstractService {
    * @return {String} route path
    */
   protected toPath(path: string) {
-    return path.replace(/\$\{encodeURIComponent\(String\((.*?)\)\)\}/g, (match, param) => { 
+    return path.replace(/\$\{encodeURIComponent\(String\((.*?)\)\)\}/g, (match, param) => {
       return `:${param}`;
     });
   }
@@ -149,7 +173,7 @@ export default class AbstractService {
    * @param {http.ServerResponse} res server response object
    * @param {String} message (optional)
    */
-  protected sendInternalServerError(res: Response, error? : string|Error) {
+  protected sendInternalServerError(res: Response, error?: string | Error) {
     const message = error instanceof Error ? (error as Error).message : error;
     const response: HttpError = {
       "code": 500,
@@ -193,7 +217,7 @@ export default class AbstractService {
    * @param time time
    * @returns time truncated to seconds
    */
-  protected truncateTime(time: Date): Date  {
+  protected truncateTime(time: Date): Date {
     return moment(time).milliseconds(0).toDate();
   }
 

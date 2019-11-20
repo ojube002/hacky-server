@@ -43,7 +43,7 @@ process.on("unhandledRejection", (error) => {
 
   initializeModels(sequelize);
 
-  const port = config().port || 3000;
+  const port = config().port || 3001;
   const app = express();
 
   const httpServer = http.createServer(app);
