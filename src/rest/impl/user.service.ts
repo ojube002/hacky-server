@@ -1,5 +1,5 @@
 import UserService from "../api/user.service";
-import { HttpError } from "../model/models";
+import { HttpError, RegisterUser } from "../model/models";
 import UserRepresentation from "keycloak-admin/lib/defs/userRepresentation";
 import { Application, Response, Request, NextFunction } from "express";
 import * as Keycloak from "keycloak-connect";
@@ -43,7 +43,7 @@ export default class UserServiceImpl extends UserService {
 
 
 
-    const body: any = req.body;
+    const body: RegisterUser = req.body;
 
 
     if (!body.username) {
@@ -56,9 +56,14 @@ export default class UserServiceImpl extends UserService {
       return;
     }
 
+    if (!body.email) {
+      this.sendNotFound(res, "email  not found");
+      return;
+    }
+
     const user: UserRepresentation = {
       username: body.username,
-      email: "",
+      email: body.email,
       enabled: true,
       credentials: [{ type: "password", value: body.password, temporary: false }]
     }
