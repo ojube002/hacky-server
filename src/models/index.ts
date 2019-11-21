@@ -109,32 +109,6 @@ export class Models {
     console.log(`export interface ${name}Model {\n${properties.join(",\n")}\n}\n`);
   }
 
-
-  // News Articles
-
-  /**
-   * Updates new article
-   * 
-   * @param id news article id
-   * @param title title 
-   * @param contents contents
-   * @param imageUrl image URL
-   * @param silentUpdate silent update
-   * @returns promise for update
-   */
-  /*   updateNewsArticle(id: number, title: string, contents: string, imageUrl: string | null, silentUpdate: boolean): PromiseLike<[number, any]> {
-      return this.sequelize.models.NewsArticle.update({
-        title: title,
-        contents: contents,
-        imageUrl: imageUrl
-      }, {
-        where: {
-          id: id
-        },
-        silent: silentUpdate ? silentUpdate : false
-      });
-    } */
-
   // Characters
 
   /**
@@ -204,7 +178,7 @@ export class Models {
    */
   createStat(id: string, level: number, experience: number): PromiseLike<StatModel> {
     return this.sequelize.models.Stat.create({
-      id: id,
+      statsId: id,
       level: level,
       experience: experience,
       createdAt: moment(),
@@ -222,7 +196,7 @@ export class Models {
    */
   updateStat(id: string, level: number, experience: number): PromiseLike<[number, any]> {
     return this.sequelize.models.Stat.update({
-      id: id,
+      statsId: id,
       level: level,
       experience: experience
     }, {

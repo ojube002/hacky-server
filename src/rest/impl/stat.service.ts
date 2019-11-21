@@ -19,7 +19,7 @@ export default class StatServiceImpl extends StatService {
 
     const body: Stat = req.body;
 
-    if (!body.id) {
+    if (!body.statsId) {
       this.sendNotFound(res, "id not found");
       return;
     }
@@ -34,7 +34,7 @@ export default class StatServiceImpl extends StatService {
       return;
     }
 
-    const databaseStat = await models.createStat(body.id, body.level, body.experience);
+    const databaseStat = await models.createStat(body.statsId, body.level, body.experience);
     res.status(200).send(await this.translateDatabaseStat(databaseStat));
 
 
@@ -48,7 +48,7 @@ export default class StatServiceImpl extends StatService {
 
     const body: Stat = req.body;
 
-    if (!body.id) {
+    if (!body.statsId) {
       this.sendNotFound(res, "level not found");
       return;
     }
@@ -64,7 +64,7 @@ export default class StatServiceImpl extends StatService {
     }
 
     try {
-      await models.updateStat(body.id, body.level, body.experience);
+      await models.updateStat(body.statsId, body.level, body.experience);
       res.status(200).send("successfully updated stat");
     }
     catch (error) {
@@ -113,7 +113,7 @@ export default class StatServiceImpl extends StatService {
   */
   private translateDatabaseStat(StatModel: StatModel): Stat {
     return {
-      id: StatModel.id,
+      statsId: StatModel.id,
       level: StatModel.level,
       experience: StatModel.experience,
       createdAt: StatModel.createdAt,
