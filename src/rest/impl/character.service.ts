@@ -36,8 +36,8 @@ export default class CharacterServiceImpl extends CharacterService {
 
     try {
       const databaseCharacter = await models.createCharacter(body.name, userId, statsId);
-      const databaseStat = await models.createStat(statsId, 1, 0);
-      res.status(200).send(await this.translateFullCharacter(databaseCharacter, databaseStat));
+      await models.createStat(statsId, 1, 0);
+      res.status(200).send(await this.translateDatabaseCharacter(databaseCharacter));
     } catch (error) {
       this.sendBadRequest(res, error);
     }
@@ -56,19 +56,14 @@ export default class CharacterServiceImpl extends CharacterService {
       return;
     }
 
-    const characterModels = await models.listCharacters(userId);
-    const characterPromises = characterModels.map(async (char) => {
-      const stat = await models.findStatById(char.statsId);
-      return { CharacterModel: char, StatModel: stat };
-    });
-    const characters = await Promise.all(characterPromises);
+    const characters = await models.listCharacters(userId);
 
     if (!characters) {
       this.sendNotFound(res, "Characters not found");
       return;
     }
 
-    res.status(200).send(characters.map((character) => character.StatModel && this.translateFullCharacter(character.CharacterModel, character.StatModel)));
+    res.status(200).send(characters.map((character) => this.translateDatabaseCharacter(character)));
   }
 
   /**
@@ -96,7 +91,7 @@ export default class CharacterServiceImpl extends CharacterService {
       return;
     }
 
-    res.status(200).send(this.translateFullCharacter(character, stat));
+    res.status(200).send(this.translateDatabaseCharacter(character));
 
   }
 
@@ -126,22 +121,6 @@ export default class CharacterServiceImpl extends CharacterService {
       statsId: characterModel.statsId,
       createdAt: this.truncateTime(characterModel.createdAt),
       updatedAt: this.truncateTime(characterModel.updatedAt)
-    };
-  }
-
-  /**
-   * Translates Character from database model into REST model
-   * 
-   * @param CharacterModel database model
-   * @param StatModel database model
-   * @returns REST model
-   */
-  private translateFullCharacter(characterModel: CharacterModel, statModel: StatModel): any {
-    return {
-      name: characterModel.name,
-      level: statModel.level,
-      experience: statModel.experience,
-      createdAt: characterModel.createdAt
     };
   }
 

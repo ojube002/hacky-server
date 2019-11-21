@@ -124,7 +124,7 @@ export default class UserServiceImpl extends UserService {
     const userId: string = this.getLoggedUserId(req);
 
     try {
-      const result = await this.kcAdminClient.users.findOne({ id: userId });
+      const result: UserRepresentation = await this.kcAdminClient.users.findOne({ id: userId });
 
       res.status(200).send(result);
     } catch (error) {
@@ -139,8 +139,6 @@ export default class UserServiceImpl extends UserService {
    * @inheritdoc
    */
   public async deleteUser(req: Request, res: Response): Promise<void> {
-
-
 
     const userId: any = this.getLoggedUserId(req);
 

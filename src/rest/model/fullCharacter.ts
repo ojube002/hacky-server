@@ -11,16 +11,16 @@
  */
 
 
-export interface User { 
-    firstname: string  | null;
-    lastname: string  | null;
-    username: string ;
-    email: string  | null;
+export interface FullCharacter { 
+    characterId: string ;
+    name: string ;
+    level: number ;
+    experience: number ;
 }    
 
-export interface UserOpt { 
-    firstname?: string;
-    lastname?: string;
-    username?: string;
-    email?: string;
+export interface FullCharacterOpt { 
+    characterId?: string;
+    name?: string;
+    level?: number;
+    experience?: number;
 }
