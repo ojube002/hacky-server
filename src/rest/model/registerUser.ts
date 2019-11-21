@@ -17,8 +17,4 @@ export interface RegisterUser {
     email: string ;
 }    
 
-export interface RegisterUserOpt { 
-    username?: string;
-    password?: string;
-    email?: string;
-}
+

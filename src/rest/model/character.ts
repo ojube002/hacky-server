@@ -20,11 +20,4 @@ export interface Character {
     readonly updatedAt: Date  | null;
 }    
 
-export interface CharacterOpt { 
-    id?: string;
-    name?: string;
-    userId?: string;
-    statsId?: string;
-    readonly createdAt?: Date;
-    readonly updatedAt?: Date;
-}
+

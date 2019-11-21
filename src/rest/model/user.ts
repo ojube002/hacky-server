@@ -18,9 +18,4 @@ export interface User {
     email: string  | null;
 }    
 
-export interface UserOpt { 
-    firstname?: string;
-    lastname?: string;
-    username?: string;
-    email?: string;
-}
+

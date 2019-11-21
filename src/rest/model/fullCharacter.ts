@@ -9,18 +9,16 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Character } from './character';
+import { Stat } from './stat';
 
 
-export interface FullCharacter { 
-    characterId: string ;
-    name: string ;
+export interface FullCharacter extends Character { 
+    statsId: string ;
     level: number ;
     experience: number ;
+    readonly createdAt: Date  | null;
+    readonly updatedAt: Date  | null;
 }    
 
-export interface FullCharacterOpt { 
-    characterId?: string;
-    name?: string;
-    level?: number;
-    experience?: number;
-}
+

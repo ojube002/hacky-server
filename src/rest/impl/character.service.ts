@@ -1,6 +1,6 @@
 import { Response, Request } from "express";
 import CharacterService from "../api/character.service";
-import { Character } from "../model/models";
+import { Character, FullCharacter } from "../model/models";
 import models, { CharacterModel, StatModel } from "../../models";
 import * as uuid from "uuid4";
 
@@ -36,8 +36,8 @@ export default class CharacterServiceImpl extends CharacterService {
 
     try {
       const databaseCharacter = await models.createCharacter(body.name, userId, statsId);
-      await models.createStat(statsId, 1, 0);
-      res.status(200).send(await this.translateDatabaseCharacter(databaseCharacter));
+      const databaseStat = await models.createStat(statsId, 1, 0);
+      res.status(200).send(await this.translateFullCharacter(databaseCharacter, databaseStat));
     } catch (error) {
       this.sendBadRequest(res, error);
     }
@@ -56,14 +56,19 @@ export default class CharacterServiceImpl extends CharacterService {
       return;
     }
 
-    const characters = await models.listCharacters(userId);
+    const characterModels = await models.listCharacters(userId);
+    const characterPromises = characterModels.map(async (char) => {
+      const stat = await models.findStatById(char.statsId);
+      return { CharacterModel: char, StatModel: stat };
+    });
+    const characters = await Promise.all(characterPromises);
 
     if (!characters) {
       this.sendNotFound(res, "Characters not found");
       return;
     }
 
-    res.status(200).send(characters.map((character) => this.translateDatabaseCharacter(character)));
+    res.status(200).send(characters.map((character) => character.StatModel && this.translateFullCharacter(character.CharacterModel, character.StatModel)));
   }
 
   /**
@@ -91,7 +96,7 @@ export default class CharacterServiceImpl extends CharacterService {
       return;
     }
 
-    res.status(200).send(this.translateDatabaseCharacter(character));
+    res.status(200).send(this.translateFullCharacter(character, stat));
 
   }
 
@@ -111,17 +116,20 @@ export default class CharacterServiceImpl extends CharacterService {
    * Translates Character from database model into REST model
    * 
    * @param CharacterModel database model
+   * @param StatModel database model
    * @returns REST model
    */
-  private translateDatabaseCharacter(characterModel: CharacterModel): Character {
+  private translateFullCharacter(characterModel: CharacterModel, statModel: StatModel): FullCharacter {
     return {
       id: characterModel.id,
       name: characterModel.name,
       userId: characterModel.userId,
       statsId: characterModel.statsId,
+      level: statModel.level,
+      experience: statModel.experience,
       createdAt: this.truncateTime(characterModel.createdAt),
-      updatedAt: this.truncateTime(characterModel.updatedAt)
-    };
-  }
-
+      updatedAt: this.truncateTime(statModel.updatedAt),
+    }
+  };
+  
 }

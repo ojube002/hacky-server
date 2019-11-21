@@ -16,7 +16,4 @@ export interface HttpError {
     message: string  | null;
 }    
 
-export interface HttpErrorOpt { 
-    code?: number;
-    message?: string;
-}
+

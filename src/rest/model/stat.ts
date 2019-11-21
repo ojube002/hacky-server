@@ -12,17 +12,11 @@
 
 
 export interface Stat { 
-    id: string  | null;
+    statsId: string ;
     level: number ;
     experience: number ;
     readonly createdAt: Date  | null;
     readonly updatedAt: Date  | null;
 }    
 
-export interface StatOpt { 
-    id?: string;
-    level?: number;
-    experience?: number;
-    readonly createdAt?: Date;
-    readonly updatedAt?: Date;
-}
+

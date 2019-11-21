@@ -16,7 +16,6 @@ export default abstract class CharacterService extends AbstractService {
     app.post(`/api${this.toPath('/character')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.createCharacter.bind(this)));
     app.delete(`/api${this.toPath('/character/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.deleteCharacter.bind(this)));
     app.get(`/api${this.toPath('/character/${encodeURIComponent(String(characterId))}')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.findCharacter.bind(this)));
-    app.get(`/api${this.toPath('/characterlist')}`, [ keycloak.protect(), this.middlewareHandler.bind(this) ], this.catchAsync(this.listCharacters.bind(this)));
   }
 
 
@@ -45,13 +44,5 @@ export default abstract class CharacterService extends AbstractService {
     * - (path) string characterId - character id
   */
   public abstract findCharacter(req: Request, res: Response): Promise<void>;
-
-
-  /**
-   * Lists Characters
-   * @summary Lists characters
-   * Accepted parameters:
-  */
-  public abstract listCharacters(req: Request, res: Response): Promise<void>;
 
 }
