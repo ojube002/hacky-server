@@ -214,7 +214,7 @@ export class Models {
    * @returns promise for delete
    */
   deleteStat(id: string): PromiseLike<number> {
-    return this.sequelize.models.Stat.destroy({ where: { id: id } });
+    return this.sequelize.models.Stat.destroy({ where: { statsId: id } });
   }
 
   /**
@@ -224,7 +224,7 @@ export class Models {
    * @returns promise for stat or null if not found
    */
   findStatById(id: string): PromiseLike<StatModel | null> {
-    return this.sequelize.models.Stat.findOne({ where: { id: id } });
+    return this.sequelize.models.Stat.findOne({ where: { statsId: id } });
   }
 
 }
