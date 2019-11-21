@@ -113,7 +113,7 @@ export default class StatServiceImpl extends StatService {
   */
   private translateDatabaseStat(StatModel: StatModel): Stat {
     return {
-      statsId: StatModel.id,
+      statsId: StatModel.statsId,
       level: StatModel.level,
       experience: StatModel.experience,
       createdAt: StatModel.createdAt,

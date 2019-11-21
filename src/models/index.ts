@@ -14,7 +14,7 @@ export interface CharacterModel {
 }
 
 export interface StatModel {
-  id: string,
+  statsId: string,
   characterId: string,
   level: number,
   experience: number,
@@ -50,7 +50,7 @@ export class Models {
     });
 
     this.defineModel("Stat", {
-      id: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true, allowNull: false },
+      statsId: { type: Sequelize.BIGINT, autoIncrement: true, primaryKey: true, allowNull: false },
       level: { type: Sequelize.BIGINT, defaultValue: 1, allowNull: false },
       experience: { type: Sequelize.BIGINT, allowNull: false },
       createdAt: { type: Sequelize.DATE, allowNull: false },
