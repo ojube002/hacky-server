@@ -13,12 +13,15 @@ import { Character } from './character';
 import { Stat } from './stat';
 
 
-export interface FullCharacter extends Character { 
+export interface FullCharacter { 
+    id: string ;
+    name: string ;
+    userId: string ;
     statsId: string ;
-    level: number ;
-    experience: number ;
     readonly createdAt: Date  | null;
     readonly updatedAt: Date  | null;
+    level: number ;
+    experience: number ;
 }    
 
 
