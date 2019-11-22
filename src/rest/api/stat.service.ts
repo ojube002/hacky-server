@@ -33,7 +33,7 @@ export default abstract class StatService extends AbstractService {
    * Deletes a stat
    * @summary Deletes a stat
    * Accepted parameters:
-    * - (path) number characterId - stat id
+    * - (path) string characterId - stat id
   */
   public abstract deleteStat(req: Request, res: Response): Promise<void>;
 
