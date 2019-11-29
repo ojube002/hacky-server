@@ -7,6 +7,7 @@ import moment = require("moment");
 export interface CharacterModel {
   id: string,
   name: string,
+  classType: string,
   userId: string,
   statsId: string,
   createdAt: Date,
@@ -43,6 +44,7 @@ export class Models {
     this.defineModel("Character", {
       id: { type: Sequelize.UUID, primaryKey: true, allowNull: false },
       name: { type: Sequelize.STRING(191), allowNull: false, unique: true },
+      classType: { type: Sequelize.STRING(191), allowNull: false },
       userId: { type: Sequelize.UUID, allowNull: false },
       statsId: { type: Sequelize.UUID, allowNull: false },
       createdAt: { type: Sequelize.DATE, allowNull: false },

@@ -47,6 +47,7 @@ export default class FullCharacterServiceImpl extends FullCharacterService {
     return {
       id: characterModel.id,
       name: characterModel.name,
+      classType: characterModel.classType,
       userId: characterModel.userId,
       statsId: characterModel.statsId,
       level: statModel.level,

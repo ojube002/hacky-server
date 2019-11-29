@@ -14,6 +14,7 @@
 export interface Character { 
     id: string ;
     name: string ;
+    classType: string ;
     userId: string ;
     statsId: string ;
     readonly createdAt: Date  | null;

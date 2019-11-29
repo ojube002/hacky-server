@@ -16,6 +16,7 @@ import { Stat } from './stat';
 export interface FullCharacter { 
     id: string ;
     name: string ;
+    classType: string ;
     userId: string ;
     statsId: string ;
     readonly createdAt: Date  | null;
