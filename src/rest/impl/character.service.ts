@@ -22,6 +22,11 @@ export default class CharacterServiceImpl extends CharacterService {
       return;
     }
 
+    if (!body.classType) {
+      this.sendNotFound(res, "class type not found");
+      return;
+    }
+
     if (!userId) {
       this.sendNotFound(res, "user id not found");
       return;
@@ -35,7 +40,7 @@ export default class CharacterServiceImpl extends CharacterService {
     }
 
     try {
-      const databaseCharacter = await models.createCharacter(body.name, userId, statsId);
+      const databaseCharacter = await models.createCharacter(body.name, userId, statsId, body.classType);
       const databaseStat = await models.createStat(statsId, 1, 0);
       res.status(200).send(await this.translateFullCharacter(databaseCharacter, databaseStat));
     } catch (error) {

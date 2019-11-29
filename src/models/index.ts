@@ -121,10 +121,11 @@ export class Models {
    * @param imageUrl image URL
    * @returns promise for news article
    */
-  createCharacter(name: string, userId: string, statsId: string): PromiseLike<CharacterModel> {
+  createCharacter(name: string, userId: string, statsId: string, classType: string): PromiseLike<CharacterModel> {
     return this.sequelize.models.Character.create({
       id: uuid(),
       name: name,
+      classType: classType,
       userId: userId,
       statsId: statsId,
       createdAt: moment(),
