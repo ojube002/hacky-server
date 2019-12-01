@@ -110,6 +110,14 @@ export default class CharacterServiceImpl extends CharacterService {
    */
   public async deleteCharacter(req: Request, res: Response): Promise<void> {
     const characterId: any = req.params.characterId;
+
+    const character = await models.findCharacterById(characterId);
+    if (!character) {
+      this.sendNotFound(res, "character not found");
+      return;
+    }
+
+    await models.deleteStat(character.statsId);
     const response = await models.deleteCharacter(characterId);
     if (response)
       res.status(200).send("deleted character successfully");
@@ -137,5 +145,5 @@ export default class CharacterServiceImpl extends CharacterService {
       updatedAt: this.truncateTime(statModel.updatedAt),
     }
   };
-  
+
 }
